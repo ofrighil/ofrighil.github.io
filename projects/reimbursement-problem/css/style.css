@@ -1,0 +1,13 @@
+.graph {
+  border: 1px solid black;
+}
+
+line {
+  stroke: #ccc;
+}
+text {
+  text-anchor: middle;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  fill: #666;
+  font-size: 16px;
+}
