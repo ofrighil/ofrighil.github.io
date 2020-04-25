@@ -35,21 +35,20 @@
       </div>
 
       <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Simulate:</span>
+        </div>
         <select class="custom-select" id="num-participants">
-          <option value=2 selected>2 participants</option>
-          <option value=3>3 participants</option>
-          <option value=4>4 participants</option>
-          <option value=5>5 participants</option>
-          <option value=6>6 participants</option>
-          <option value=7>7 participants</option>
+          <option value=2 selected>2 participants&nbsp;</option>
+          <option value=3>3 participants&nbsp;</option>
+          <option value=4>4 participants&nbsp;</option>
+          <option value=5>5 participants&nbsp;</option>
+          <option value=6>6 participants&nbsp;</option>
+          <option value=7>7 participants&nbsp;</option>
+          <option value=8>8 participants&nbsp;</option>
+          <option value=9>9 participants&nbsp;</option>
         </select>
-        <div class="input-group-append input-group-prepend">
-          <span class="input-group-text">and maximum reimbursement amount</span>
-        </div>
-        <div class="input-group-append input-group-prepend">
-          <span class="input-group-text">$</span>
-        </div>
-        <input type="number" class="form-control" id="simulated-max" placeholder="50.00"></input>
+        <input type="number" class="form-control" id="simulated-max" placeholder="maximum amount in USD" data-toggle="tooltip" data-placement="auto" title="Default set to 50.00 USD"></input>
         <div class="input-group-append">
           <button type="button" class="btn btn-outline-primary" onclick="randRoll()">Generate Random</button>
         </div>
@@ -75,9 +74,11 @@
         </select>
         <div class="input-group-append input-group-prepend">
           <span class="input-group-text">paid</span>
-          <span class="input-group-text">$</span>
         </div>
         <input type="number" class="form-control" id="amount"></input>
+        <div class="input-group-append input-group-prepend">
+          <span class="input-group-text">USD</span>
+        </div>
         <div class="input-group-append input-group-prepend">
           <span class="input-group-text">for</span>
         </div>
@@ -107,46 +108,58 @@
       </div>
 
       <div class="d-flex justify-content-center">
-        <div class="col-md-6">
+        <div class="col-sm-2">
           <button type="button" class="btn btn-block btn-outline-info" onclick="createInefficientNetwork()">
-            Show Multigraph
+            All
           </button>
         </div>
-        <div class="col-md-6">
+        <div class="col-sm-2">
           <button type="button" class="btn btn-block btn-outline-info" onclick="createInefficientNetwork(reduced=true)">
-            Show Graph Reduction
+            Reduced
           </button>
         </div>
       </div>
-      <div id="vis-1" class="graph"></div>
+      <div class="d-flex justify-content-center">
+        <div id="vis-1" class="graph col-md-7"></div>
+      </div>
 
       <div class="d-flex justify-content-center">
-        <div class="col-md-6">
+        <div class="col-sm-3">
           <button type="button" class="btn btn-block btn-outline-info" onclick="createAccountantNetwork()">
             External Accountant
           </button>
         </div>
-        <div class="col-md-6">
+        <div class="col-sm-3">
           <button type="button" class="btn btn-block btn-outline-info" onclick="createAccountantNetwork(external=false)">
             Participant Accountant
           </button>
         </div>
       </div>
-      <div id="vis-2" class="graph"></div>
+      <div class="d-flex justify-content-center">
+        <div id="vis-2" class="graph col-md-7"></div>
+      </div>
 
       <div class="d-flex justify-content-center">
-        <div class="col-md-6">
+        <div class="col-sm-3">
           <button type="button" class="btn btn-block btn-outline-info" onclick="createEfficientNetwork()">
             Apply Standard Reduction
           </button>
         </div>
-        <div class="col-md-6">
+        <div class="col-sm-3">
           <button type="button" class="btn btn-block btn-outline-info" onclick="createEfficientNetwork(label=true, random=true)">
             Apply Arbitrary Reduction
           </button>
         </div>
       </div>
-      <div id="vis-3" class="graph"></div>
+      <div class="d-flex justify-content-center">
+        <div id="vis-3" class="graph col-md-7"></div>
+      </div>
+
     </div>
   </body>
+  <script>
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  </script>
 </html>

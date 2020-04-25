@@ -1,5 +1,7 @@
 .graph {
   border: 1px solid black;
+  height: 250px;
+  padding: 0px;
 }
 
 line {
