@@ -26,12 +26,49 @@
   </head>
   <body>
     <div class="container"> <!-- container start -->
+      <ul class="nav navbar sticky-top navbar-light" style="position: fixed !important;">
+        <li>
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="add participant" id="new-name">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-secondary" id="add-participant" onclick="insertParticipant()">
+                Add
+              </button>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="input-group">
+            <select class="selectpicker form-control" id="reimbursers" title="select reimbursee">
+            </select>
+            <div class="input-group-append input-group-prepend">
+              <span class="input-group-text">paid</span>
+            </div>
+            <input type="number" class="form-control" id="amount"></input>
+            <div class="input-group-append input-group-prepend">
+              <span class="input-group-text">USD</span>
+            </div>
+            <div class="input-group-append input-group-prepend">
+              <span class="input-group-text">for</span>
+            </div>
+            <select class="selectpicker form-control" id="reimbursees" title="select reimburser">
+            </select>
+            <div class="input-group-append">
+              <button type="button" class="btn btn-secondary" id="add-participant" onclick="insertTransaction()">
+                Add
+              </button>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-danger" onclick="clearAll()">Clear</button>
+          </div>
+        </li>
+      </ul>
+
       <div class="jumbotron">
         <h1><b>The Reimbursement Problem</b></h1>
-      </div>
-      <!-- ADD TABLE OF CONTENTS -->
-      <div class="d-flex justify-content-center">
-        <button type="button" class="btn btn-outline-danger" onclick="clearAll()">Clear Page</button>
       </div>
 
       <div class="input-group">
@@ -54,43 +91,15 @@
         </div>
       </div>
 
-      <div class="input-group"> <!-- enter participant div start -->
-        <input type="text" class="form-control" placeholder="add participant" id="new-name">
-        <div class="input-group-append">
-          <button type="button" class="btn btn-outline-secondary" id="add-participant" onclick="insertParticipant()">
-            Add
-          </button>
-        </div>
-      </div> <!-- enter participant div end -->
-      <div> <!-- participant table div start -->
+      <div>
         <table class="table" id="participants-table">
           <thead>
             <th scope="col">Participants</th>
           </thead>
         </table>
       </div>
-      <div class="input-group">
-        <select class="selectpicker form-control" id="reimbursers" title="select reimbursee">
-        </select>
-        <div class="input-group-append input-group-prepend">
-          <span class="input-group-text">paid</span>
-        </div>
-        <input type="number" class="form-control" id="amount"></input>
-        <div class="input-group-append input-group-prepend">
-          <span class="input-group-text">USD</span>
-        </div>
-        <div class="input-group-append input-group-prepend">
-          <span class="input-group-text">for</span>
-        </div>
-        <select class="selectpicker form-control" id="reimbursees" title="select reimburser">
-        </select>
-        <div class="input-group-append">
-          <button type="button" class="btn btn-outline-secondary" id="add-participant" onclick="insertTransaction()">
-            Add
-          </button>
-        </div>
-      </div>
-      <div> <!-- reimbursements table -->
+
+      <div>
         <table class="table" id="reimbursement-table">
           <thead>
             <th scope="col">Reimbursee</th>
@@ -107,54 +116,74 @@
         </table>
       </div>
 
-      <div class="d-flex justify-content-center">
-        <div class="col-sm-2">
-          <button type="button" class="btn btn-block btn-outline-info" onclick="createInefficientNetwork()">
-            All
-          </button>
+      <h3>The Reimbursement Graph</h3>
+      <div class="row" style="padding-bottom:20px">
+        <div class="col-md-6">
         </div>
-        <div class="col-sm-2">
-          <button type="button" class="btn btn-block btn-outline-info" onclick="createInefficientNetwork(reduced=true)">
-            Reduced
-          </button>
+        <div class="col-md-6">
+          <div style="padding-bottom:10px">
+            <div id="vis-1" class="graph"></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <button type="button" class="btn btn-block btn-outline-info" onclick="createInefficientNetwork()">
+                Complete
+              </button>
+            </div>
+            <div class="col-sm-6">
+              <button type="button" class="btn btn-block btn-outline-info" onclick="createInefficientNetwork(reduced=true)">
+                Reduced
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="d-flex justify-content-center">
-        <div id="vis-1" class="graph col-md-7"></div>
       </div>
 
-      <div class="d-flex justify-content-center">
-        <div class="col-sm-3">
-          <button type="button" class="btn btn-block btn-outline-info" onclick="createAccountantNetwork()">
-            External Accountant
-          </button>
+      <h3 style="text-align:right">Using an Accountant</h3>
+      <div class="row" style="padding-bottom:20px">
+        <div class="col-md-6">
+          <div style="padding-bottom:10px">
+            <div id="vis-2" class="graph"></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <button type="button" class="btn btn-block btn-outline-info" onclick="createAccountantNetwork()">
+                External
+              </button>
+            </div>
+            <div class="col-sm-6">
+              <button type="button" class="btn btn-block btn-outline-info" onclick="createAccountantNetwork(external=false)">
+                Participant
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="col-sm-3">
-          <button type="button" class="btn btn-block btn-outline-info" onclick="createAccountantNetwork(external=false)">
-            Participant Accountant
-          </button>
+        <div class="col-md-6">
         </div>
-      </div>
-      <div class="d-flex justify-content-center">
-        <div id="vis-2" class="graph col-md-7"></div>
       </div>
 
-      <div class="d-flex justify-content-center">
-        <div class="col-sm-3">
-          <button type="button" class="btn btn-block btn-outline-info" onclick="createEfficientNetwork()">
-            Apply Standard Reduction
-          </button>
+      <h3>Bipartite Graph Reduction</h3>
+      <div class="row" style="padding-bottom:20px">
+        <div class="col-md-6">
         </div>
-        <div class="col-sm-3">
-          <button type="button" class="btn btn-block btn-outline-info" onclick="createEfficientNetwork(label=true, random=true)">
-            Apply Arbitrary Reduction
-          </button>
+        <div class="col-md-6">
+          <div style="padding-bottom:10px">
+            <div id="vis-3" class="graph"></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <button type="button" class="btn btn-block btn-outline-info" onclick="createEfficientNetwork()">
+                Standard
+              </button>
+            </div>
+            <div class="col-sm-6">
+              <button type="button" class="btn btn-block btn-outline-info" onclick="createEfficientNetwork(label=true, random=true)">
+                Arbitrary
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="d-flex justify-content-center">
-        <div id="vis-3" class="graph col-md-7"></div>
-      </div>
-
     </div>
   </body>
   <script>

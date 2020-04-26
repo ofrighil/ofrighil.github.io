@@ -134,7 +134,7 @@ function addTransaction(reimburser, reimbursee, amount, generateGraph=true) {
   rowFoot.insertCell(1);
   const cellFootAmt = rowFoot.insertCell(2);
   cellFootAmt.className = "text-right";
-  cellFootAmt.innerHTML = `total amount: ${cumulativeAmount.toFixed(2)}`;
+  cellFootAmt.innerHTML = `cumulative amount: ${cumulativeAmount.toFixed(2)}`;
 
   if (generateGraph) {
     createInefficientNetwork();

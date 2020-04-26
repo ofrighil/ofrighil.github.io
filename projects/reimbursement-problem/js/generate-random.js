@@ -108,7 +108,10 @@ function randRoll() {
   } else if (Number($("#simulated-max").val()) <= 0) {
     alert("Please enter a nonzero positive number.");
     return
-  } else {
+  } else  if ($("#simulated-max").val().split(".")[1].length > 2) {
+    alert("You can only specify up to two decimal places.");
+    return
+  }else {
     maxVal = Number($("#simulated-max").val());
   }
 
