@@ -109,6 +109,8 @@ function createAccountantNetwork(external=true, label=true) {
     accountant = shuffle([...getNames()]).pop();
   }
 
+  if (![...getNames()].length) return
+
   balance = {};
   getNames().forEach(participant => balance[participant] = 0);
 
