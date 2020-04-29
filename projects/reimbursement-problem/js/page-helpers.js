@@ -3,10 +3,21 @@ function getNames() {
 
   const names = new Set()
   for (let i = 1; i <= table.rows.length - 1; i++) {
-    names.add(table.rows[i].innerText);
+    names.add(table.rows[i].cells[0].innerText);
   }
 
   return names
+}
+
+function updateBalance(participant, amount) {
+  const table = document.getElementById("participants-table");
+  for (row of table.rows) {
+    if (row.cells[0].innerText == participant) {
+      prevBalance = Number(row.cells[1].innerText);
+      newBalance = addTwoVals(prevBalance, amount);
+      row.cells[1].innerText = newBalance.toFixed(2);
+    }
+  }
 }
 
 function insertParticipant(generateGraph=true) {
@@ -39,8 +50,11 @@ function addName(name, generateGraph) {
   // add name to table
   const table = document.getElementById("participants-table");
   const row = table.insertRow(-1);
-  const cell = row.insertCell(0);
-  cell.innerHTML = name;
+  const cellName = row.insertCell(0);
+  const cellBalance = row.insertCell(1);
+  cellName.innerHTML = name;
+  cellBalance.className = "text-right";
+  cellBalance.innerHTML = "0.00";
 
   let reimburserOptions = $("#reimbursers").text().trim().split(' ');
   if (reimburserOptions[0] == "") reimburserOptions = []; // just for the first time
@@ -102,6 +116,14 @@ function addTransaction(reimburser, reimbursee, amount, generateGraph=true) {
     cumulativeAmount = addTwoVals(Number(table.rows[dim].cells[2].innerText.split(' ')[2]), Math.abs(amount));
   } else {
     cumulativeAmount = Math.abs(amount);
+  }
+
+  if (amount > 0) {
+    updateBalance(reimburser, -amount);
+    updateBalance(reimbursee, amount);
+  } else {
+    updateBalance(reimburser, amount);
+    updateBalance(reimbursee, -amount);
   }
 
   table.deleteTFoot();

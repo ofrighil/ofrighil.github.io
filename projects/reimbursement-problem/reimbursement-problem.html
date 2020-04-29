@@ -11,12 +11,13 @@
     <script type="text/javascript">
       const N = 20; // Maximum number of participants
       const DEFAULTMAX = 50.00;
-      const SIMMAX = Math.floor(0.4 * 200); // Maximum amout of simulated transactions
     </script>
     <script type="text/javascript" src="js/page-helpers.js"></script>
     <script type="text/javascript" src="js/generate-random.js"></script>
     <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <script type="text/javascript" src="js/vis-helpers.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
@@ -28,6 +29,29 @@
     <div class="container">
       <div class="jumbotron">
         <h1><b>The Reimbursement Problem</b></h1>
+      </div>
+
+      <div class="section">
+        <p class="indented">
+          Suppose you and some friends go on a trip together.
+          Usually over the course of the trip, transactions are made by a participant on behalf of others.
+          For example, you could pick up the tab for everyone at a resturant, or your friend might buy ice cream for a couple other friends.
+          Naturally, everyone would like to be reimbursed at the end of the trip.
+          So then what's the <i>best</i> way to reimburse everyone?
+          For a detailed explanation, scroll down to the bottom of the page.
+          Else, you can start playing around with the tool.
+        </p>
+        <p class="indented">
+          This tool is straightforward to use.
+          First, add up to <script>document.write(`${N}`)</script> participants.
+          These participants are kept track in the <a href="#participants-table-button" style="color:black"><b>Participants Table</b></a>.
+          Then for each transaction that occurred, select a reimbursee, a reimburser, and a given amount of money to be reimbursed.
+          These transactions are kept track in the <a href="#reimbursement-table-button" style="color:black"><b>Reimbursement Table</b></a>.
+          The <a href="#the-reimbursement-graph" style="color:black">graphs</a> that these sets of particiapnts and reimbursements form are then dynamically generated below.
+          The directed edge points from the reimburser to the reimbursee and is weighted by the reimbursement amount.
+          To clear the contents of this page, press the <q>Clear</q> button.
+          To simulate a random situation with a certain number of participants, <a href="#random-simulator" style="color:black">jump down to random simulator</a>.
+        </p>
       </div>
 
       <div class="section">
@@ -73,7 +97,7 @@
         <div id="accordion">
           <div class="card">
             <div class="card-header">
-              <button class="btn btn-lg" data-toggle="collapse" data-target="#collapseOne">
+              <button class="btn btn-lg" data-toggle="collapse" data-target="#collapseOne" id="participants-table-button">
                 Participants Table
               </button>
             </div>
@@ -83,6 +107,7 @@
                 <table class="table" id="participants-table">
                   <thead>
                     <th scope="col">Participants</th>
+                    <th scope="col" class="text-right">Balance (USD)</th>
                   </thead>
                 </table>
               </div>
@@ -90,7 +115,7 @@
           </div>
           <div class="card">
             <div class="card-header" id="headingTwo">
-              <button class="btn btn-lg collapsed" data-toggle="collapse" data-target="#collapseTwo">
+              <button class="btn btn-lg collapsed" data-toggle="collapse" data-target="#collapseTwo" id="reimbursement-table-button">
                 Reimbursement Table
               </button>
             </div>
@@ -118,7 +143,12 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section" id="random-simulator">
+        <p>
+          Given a number of participants \(n\) and a maximum transaction amount \(A\) USD,
+          the random simulator generates a transaction between each participant.
+          This entails \(n(n-1)\) unique reimbursements, each ranging between 0.01 USD and \(A\) USD.
+        </p>
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text">Simulate:</span>
@@ -135,17 +165,27 @@
           </select>
           <input type="number" class="form-control" id="simulated-max" placeholder="maximum amount in USD" data-toggle="tooltip" data-placement="auto" title="Default set to 50.00 USD"></input>
           <div class="input-group-append">
-            <button type="button" class="btn btn-outline-primary" onclick="randRoll()">Generate Random</button>
+            <button type="button" class="btn btn-primary" onclick="randRoll()">Generate Random</button>
           </div>
         </div>
       </div>
 
-      <div class="section">
+      <div class="section" id="the-reimbursement-graph">
         <div class="row justify-content-center">
           <h3>The Reimbursement Graph</h3>
         </div>
         <div class="row">
           <div class="col-md-6" style="padding-bottom: 5px">
+            <p class="indented">
+              The complete reimbursement graph shows the total reimbursement
+              amount each reimburser owes each reimbursee.
+              The reduced reimbursement graph simplifies the complete
+              reimbursement graph by showing only the difference between
+              reimbursement amount between each participant.
+              For \(n\) participants, the complete reimbursement graph would have
+              at most \(n(n-1)\) edges and the reduced reimbursement graph would
+              have at most \(n(n-1)/2\) edges.
+            </p>
           </div>
           <div class="col-md-6">
             <div style="padding-bottom: 10px">
@@ -153,12 +193,12 @@
             </div>
             <div class="row">
               <div class="col-sm-6" style="padding-bottom: 10px">
-                <button type="button" class="btn btn-block btn-outline-info" onclick="createInefficientNetwork()">
+                <button type="button" class="btn btn-block btn-info" onclick="createInefficientNetwork()">
                   Complete
                 </button>
               </div>
               <div class="col-sm-6">
-                <button type="button" class="btn btn-block btn-outline-info" onclick="createInefficientNetwork(reduced=true)">
+                <button type="button" class="btn btn-block btn-info" onclick="createInefficientNetwork(reduced=true)">
                   Reduced
                 </button>
               </div>
@@ -178,18 +218,29 @@
             </div>
             <div class="row">
               <div class="col-sm-6" style="padding-bottom: 10px">
-                <button type="button" class="btn btn-block btn-outline-info" onclick="createAccountantNetwork()">
+                <button type="button" class="btn btn-block btn-info" onclick="createAccountantNetwork()">
                   External
                 </button>
               </div>
               <div class="col-sm-6">
-                <button type="button" class="btn btn-block btn-outline-info" onclick="createAccountantNetwork(external=false)">
+                <button type="button" class="btn btn-block btn-info" onclick="createAccountantNetwork(external=false)">
                   Participant
                 </button>
               </div>
             </div>
           </div>
           <div class="col-md-6 order-first order-md-last" style="padding-bottom: 5px">
+            <p class="indented">
+              One way to simplify the reimbursement graph is to introduce an
+              accountant.
+              For \(n\) participants, an external accountant would reduced the
+              number of reimbursements to \(n\).
+              The accountant collects money from participants with a negative balance
+              and distributes the money to particiapants with a positive balance.
+              An internal accountant, chosen to be one of the participants, would
+              reduce the number of reimbursements further to \(n-1\) since one
+              fewer participant needs to make a reimbursement.
+            </p>
           </div>
         </div>
       </div>
@@ -200,6 +251,16 @@
         </div>
         <div class="row">
           <div class="col-md-6" style="padding-bottom: 5px">
+            <p>
+              For \(n\) participants, the easiest way to reduce the number of
+              reimbursements to \(n-1\) is to have a participant with a negative
+              balance reimburse a participant with a negative balance.
+              Whereas the standard reduction matches the most postive and most
+              negative balance each iteration, the arbitrary reduction randomly
+              pairs a positive and negative balance.
+              This is more efficient than having an internal accountant becasue
+              it eliminates unnecessay monetary transfers.
+            </p>
           </div>
           <div class="col-md-6">
             <div style="padding-bottom:10px">
@@ -207,12 +268,12 @@
             </div>
             <div class="row">
               <div class="col-sm-6" style="padding-bottom: 10px">
-                <button type="button" class="btn btn-block btn-outline-info" onclick="createEfficientNetwork()">
+                <button type="button" class="btn btn-block btn-info" onclick="createEfficientNetwork()">
                   Standard
                 </button>
               </div>
               <div class="col-sm-6">
-                <button type="button" class="btn btn-block btn-outline-info" onclick="createEfficientNetwork(label=true, random=true)">
+                <button type="button" class="btn btn-block btn-info" onclick="createEfficientNetwork(label=true, random=true)">
                   Arbitrary
                 </button>
               </div>
@@ -223,9 +284,6 @@
 
       <div class="section">
         <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#introduction" role="tab">Introduction</a>
-          </li>
           <li class="nav-item">
             <a class="nav-link" id="profile-tab" data-toggle="tab" href="#formalization" role="tab">Formalization</a>
           </li>

@@ -1,11 +1,15 @@
-.section {
-  padding-bottom: 20px;
-}
-
 .graph {
   border: 1px solid black;
   height: 250px;
   padding: 0px;
+}
+
+.indented {
+  text-indent: 20px;
+}
+
+.section {
+  padding-bottom: 13px;
 }
 
 line {
