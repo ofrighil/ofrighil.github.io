@@ -34,7 +34,7 @@
       <div class="section">
         <p class="indented">
           Suppose you and some friends go on a trip together.
-          Usually over the course of the trip, transactions are made by a participant on behalf of others.
+          Over the course of the trip, transactions are made by a participant on behalf of others.
           For example, you could pick up the tab for everyone at a resturant, or your friend might buy ice cream for a couple other friends.
           Naturally, everyone would like to be reimbursed at the end of the trip.
           So then what's the <i>best</i> way to reimburse everyone?
@@ -50,7 +50,7 @@
           The <a href="#the-reimbursement-graph" style="color:black">graphs</a> that these sets of particiapnts and reimbursements form are then dynamically generated below.
           The directed edge points from the reimburser to the reimbursee and is weighted by the reimbursement amount.
           To clear the contents of this page, press the <q>Clear</q> button.
-          To simulate a random situation with a certain number of participants, <a href="#random-simulator" style="color:black">jump down to random simulator</a>.
+          To simulate a random situation with a certain number of participants, <a href="#random-simulator" style="color:black">jump down to the random simulator</a>.
         </p>
       </div>
 
@@ -234,12 +234,11 @@
               One way to simplify the reimbursement graph is to introduce an
               accountant.
               For \(n\) participants, an external accountant would reduced the
-              number of reimbursements to \(n\).
+              number of reimbursements to at most \(n\).
               The accountant collects money from participants with a negative balance
               and distributes the money to particiapants with a positive balance.
-              An internal accountant, chosen to be one of the participants, would
-              reduce the number of reimbursements further to \(n-1\) since one
-              fewer participant needs to make a reimbursement.
+              An internal accountant, chosen randomly to be one of the participants,
+              would further reduce the maximum number to \(n-1\).
             </p>
           </div>
         </div>
@@ -251,10 +250,10 @@
         </div>
         <div class="row">
           <div class="col-md-6" style="padding-bottom: 5px">
-            <p>
+            <p class="indented">
               For \(n\) participants, the easiest way to reduce the number of
-              reimbursements to \(n-1\) is to have a participant with a negative
-              balance reimburse a participant with a negative balance.
+              reimbursements to at most \(n-1\) is to have participants with a negative
+              balance reimburse participants with a positive balance.
               Whereas the standard reduction matches the most postive and most
               negative balance each iteration, the arbitrary reduction randomly
               pairs a positive and negative balance.
@@ -285,12 +284,242 @@
       <div class="section">
         <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
           <li class="nav-item">
-            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#formalization" role="tab">Formalization</a>
+            <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#formalization" role="tab">Formalizing the Problem</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#weight-minimization" role="tab">Minimizing the Total Weight</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" id="profile-tab" data-toggle="tab" href="#edge-minimization" role="tab">Minimizing the Number of Edges</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#acknowledgements" role="tab">Acknowledgements</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#references" role="tab">References</a>
           </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="introduction" role="tabpanel"></div>
-          <div class="tab-pane fade" id="formalization" role="tabpanel"></div>
+          <div class="tab-pane fade show active" id="formalization" role="tabpanel">
+            <div style="padding: 10px">
+              <p class="indented">
+                Though there are a few ways to conceptualize the reimbursement problem,
+                perhaps the easiest way is to interpret this as a graph problem.
+                Suppose we have \(n \geq 3\) participants \(V = \{ v_\ell \}_{\ell=1}^n\).
+                For participants \(v_i, v_j \in V\), the weight of a directed
+                edge \(q_{ij}\) that points from \(v_i\) to \(v_j\) denotes the
+                debt that \(v_i\) owes \(v_j\).
+                In general, each participant has both a payable and a receivable
+                from all other participants.
+                Then for edges \(E\), \(|E|\) is at most \(n(n-1)\).
+                This multigraph \(G = (V, E)\) can be represented by an \(n \times n\)
+                hollow matrix \(Q = (q_{ij})\).
+              </p>
+              <p class="indented">
+                The trivial reimbursement resolution here is to go through with
+                \(|E|\) reimbursements.
+                Since \(|E| \leq n(n-1)\), this would take \(\mathcal{O}(n^2)\)
+                reimbursements.
+                One simple reduction that would cut this number in half would be to
+                evaluate \(|q_{ij} - q_{ji}|\) for all unordered pairs \((v_i, v_j)\).
+                If \(q_{ij} \geq q_{ji}\), then have \(v_i\) reimburse \(v_j\) the
+                amount \(|q_{ij} - q_{ji}|\).
+                Else if \(q_{ij} < q_{ji}\), then have \(v_j\) reimburse \(v_i\)
+                the aforementioned amount.
+                However, this reduction does not asymptotically improve the number
+                of necessary reimbursements.
+              </p>
+              <p class="indented">
+                Let's take a closer look at \(Q\) and define some new variables:
+                \begin{align*}
+                  \text{all payables to $v_i$,}\ p_i &= \sum_{k=1}^n q_{ik} \\
+                  \text{all receivables to $v_i$,}\ r_i &= \sum_{k=1}^n q_{ki} \\
+                  \text{the balance of $v_i$,}\ b_i &= r_i - p_i.
+                \end{align*}
+                To be clear here, if \(b_i \geq 0\) then \(v_i\) should be
+                reimbursed \(b_i\) and if \(b_i < 0\) then \(v_i\) needs to
+                reimburse \(b_i\).
+                Note that there is no need to specify to whom yet.
+                Another important observation to make here is that the total
+                receivables equals the total payabales.
+                Mathematically, this should be clear:
+                \begin{align*}
+                  \sum_{i=1}^n \sum_{j=1}^n q_{ij} = \sum_{j=1}^n r_j = \sum_{i=1}^n p_i.
+                \end{align*}
+                Intuitively, this means that the total amount of money borrowed
+                will be returned.
+                Then we conclude
+                \begin{align*}
+                  \sum_{i=1}^n r_i &= \sum_{i=1}^n p_i \\
+                  \sum_{i=1}^n (r_i - p_i) &= 0\\
+                  \sum_{i=1}^n b_i &= 0.
+                \end{align*}
+              </p>
+              <p class="indented">
+                Let's use these balances \(B = \{b_\ell\}_{\ell=1}^n\) to construct
+                a new graph.
+                Though the vertices \(V\) will remain the same, we'll need to come
+                up with a new set of directed edges with weights \(E^*\).
+                Given a vertex \(v_i\), let the sum of all incoming edgew be \(r_i\)
+                and let the sum of all outgoing edges be \(p_i\) so that the
+                difference between incoming edges and outgoing edges equals \(b_i\).
+                A weighted directed graph that has these \(V\) and edges \(E^*\)
+                such that \(\sum b_i = 0\) is called a transfer graph.
+                Now, we can finally clarify what it means to determine the
+                <i>best</i> way to reimburse everyone:
+                Given vertices \(V = \{v_\ell\}_{\ell=1}^n\) each with a
+                corresponding balance in \(B = \{b_\ell\}_{\ell=1}^n\), how can we
+                construct a transfer graph \(T = (V, E^*)\) that will minimize
+                the total weight?
+              </p>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="weight-minimization" role="tabpanel">
+            <div style="padding: 10px">
+              <p class="indented">
+                The total weight of a transfer graph is the sum of all edge weights.
+                For this problem, the minimum weight happens to be the sum of all
+                positive balances.
+                This is because at the bare minimum everyone must be properly
+                reimbursed.
+                Though it may be obvious, let's be a be more precise about the
+                minimum value.
+                We saw in the previous section that the sum of all balances is zero:
+                \begin{align*}
+                  \sum_{i=1}^n b_i &= 0 \\
+                  \sum b^+ + \sum b^- &= 0.
+                \end{align*}
+                What we just did is split the sum between its positive and negative
+                balances.
+                Then it follows that
+                \begin{align*}
+                  \sum b^+ &= -\sum b^- \\
+                  \Big| \sum b^+ \Big| &= \Big| \sum b^- \Big| \\
+                  \sum |b^+| &= \sum |b^-|.
+                \end{align*}
+                The last equality follows from the fact that for a set of numbers
+                that are either all positive or all negative the magnitude of their
+                sum is equal to the sum of their magnitudes.
+                So,
+                \begin{align*}
+                  \sum |b^+| + \sum |b^-| &= \sum_{i=1}^n |b_i| \\
+                  2 \sum |b^+| &= \sum_{i=1}^n |b_i| \\
+                  \sum b^+ &= \frac{1}{2} \sum_{i=1}^n |b_i|.
+                \end{align*}
+              </p>
+              <p class="indented">
+                Before we jump into building a transfer graph with minimal total
+                weight, let's discuss two suboptimal solutions.
+                The first is the <b>central account</b> solution.
+                In this solution, we actually add a vertex \(v_0\) (<q>the accountant</q>)
+                to \(V\) that would act as a monetary repository.
+                \(v_0\) would share an edge with all other vertices.
+                For any \(v_i\) with a negative balance, an edge is draw from
+                \(v_i\) to \(v_0\) with weight \(|b_i|\).
+                For any \(v_j\) with a positive balance, an edge is draw from
+                \(v_0\) to \(v_j\) with weight \(b_j\).
+                Since each vertex in \(V - v_0\) connects to \(v_0\) at most
+                once, this means there are at most \(n\) transfers.
+                This is already a significant improvement over the \(\mathcal{O}(n^2)\)
+                transfers we would have to make with the trivial reimbursement
+                solution.
+              </p>
+              <p class="indented">
+                The second is the <b>friend as central account</b> solution.
+                Rather than adding in a new vertex we choose a participant to
+                act as the monetary repository.
+                If \(v_i\) is chosen to be the accountant, each other participant
+                in \(V - v_i\) shares at most one directed edge only with \(v_i\).
+                So there are at most \(n-1\) transfers.
+                While this sounds like effective solution, there is one glaring issue: in general,
+                it does not minimize the total weight.
+              </p>
+              <p class="indented">
+                For example, consider the following <a onclick="generateExample()" style="color:blue" data-toggle="tooltip" data-placement="auto" title='Click here to generate the graphs of this example.'>situation</a>:
+                \begin{align*}
+                  V &= \{ \text{Annabelle}, \text{Issac}, \text{Erwin}, \text{Opal} \} \\
+                  B &= \{ -7, 7, -13, 13 \}.
+                \end{align*}
+                No matter whom is chosen as the accountant, there is no way to get the minimum total weight.
+              </p>
+              <p class="indented">
+                To summarize what we just covered, not every transfer graph with the same number of edges has the
+                same total weight.
+                Everyone must directly reimburse or be reimbursed the exact amount
+                simultaneously, else the total weight would just increase.
+                This is exactly the issue with having a participant become an accountant (or even introducing an accountant at all):
+                all participants with a negative balance must first transfer their
+                reimbursements to the accountant first, thereby unnecessarily
+                increasing the total weight by the sum of all such balances.
+              </p>
+              <p class="indented">
+              </p>
+              <p class="indented">
+                Now, let's go over the algorithm that constructs a transfer graph that minimizes the total weight: <br>
+                <code style="color: #3D6EC2">
+                  1. Initialize a transfer graph <i>T</i> with vertices <i>V</i> but no edges. <br>
+                  2. If all balances <i>B</i>, each of which corresponds to a vertex in <i>V</i>,
+                  equal 0, the transfer graph <i>T</i> is fully constructed. <br>
+                  3. Else, there exists two balances <i>b</i><sub>i</sub> and <i>b</i><sub>j</sub>
+                  in B such that <i>b</i><sub>i</sub> < 0 < <i>b</i><sub>j</sub>. <br>
+                  4. Let <i>m</i> = min(|<i>b</i><sub>i</sub>|, <i>b</i><sub>j</sub>) and create a directed
+                  edge from <i>v</i><sub>i</sub> to <i>v</i><sub>j</sub> with weight <i>m</i> (no edge
+                  is created if |<i>b</i><sub>i</sub>| = <i>b</i><sub>j</sub>). Then decrease
+                  <i>b</i><sub>j</sub> by <i>m</i> and increase <i>b</i><sub>j</sub> by <i>m</i>. <br>
+                  5. Go to step 2.
+                </code> <br>
+                Why is this algorithm gauranteed to return a graph with no more than \(n-1\) edges?
+                At each iteration, the algorithm chooses two vertices with opposing
+                balances and depletes one of them to create an edge, or no edge
+                if the balances cancel out.
+                A vertex with a depleted balance will not be chosen again.
+                Then, at the beginning of the last iteration there are at most
+                \(n-2\) edges.
+                Each preceding iteration had depleted one vertex's balance, so
+                there will only be one vertex with a positive balance and one
+                vertex with a negative balance left.
+                If the last iteration also generates an edge, there are \(n-1\)
+                edges.
+                Regardless, there are no more vertices with a nonzero balance so
+                the algorithm terminates.
+                Actually, \(T\) also happens to be a bipartite graph because
+                vertices with a positive balance only have incoming directed
+                edges and vertices with a negative balance only have outgoing
+                edges.
+                So let's call this the <b>bipartite transfer graph</b> solution.
+              </p>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="acknowledgements" role="tabpanel">
+            <div style="padding: 10px">
+              <p class="indented">
+                I first encountered this problem during my senior year of college.
+                My friend brought it to my attention after our spring break trip.
+                It sparked my curiosity in algorithms and motivated me to learn more
+                about computer science.
+                Thanks Gray.
+              </p>
+              <p class="indented">
+                While I had figured out the bipartite graph solution on my own,
+                I had not mathematically formalized the solution.
+                The preceding sections are largely based on Tom Verhoeff's paper [2]
+                (and some notation borrowed from [1]).
+                I made certain changes in an effort to streamline the explanations.
+              </p>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="references" role="tabpanel">
+            <div style="padding: 10px">
+              <ol class="ref">
+                <li>
+                  Daan Salom&#233;. 2017. <a href="https://research.tue.nl/en/studentTheses/bank-transaction-minimization">Bank Transaction Minimization</a>. Bachelor's thesis. Eindhoven University of Technology, Eindhoven, Netherlands.
+                </li>
+                <li>
+                  Tom Verhoeff. 2004. <a href="https://research.tue.nl/en/publications/settling-multiple-debts-efficiently-an-invitation-to-computing-sc">Settling Multiple Debts Efficiently: An Invitation to Computing Science</a>. <cite>Informatics in Education 3</cite>, 1 (2004), 105-126.
+                </li>
+              </ol>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -119,3 +119,15 @@ function randRoll() {
   randPopulateParticipantsTable();
   randPopulateReimbursementsTable(maxVal);
 }
+
+function generateExample() {
+  clearAll();
+
+  addName("Annabelle", false);
+  addName("Erwin", false);
+  addName("Issac", false);
+  addName("Opal", false);
+
+  addTransaction("Annabelle", "Erwin", 7, false);
+  addTransaction("Issac", "Opal", 13);
+}

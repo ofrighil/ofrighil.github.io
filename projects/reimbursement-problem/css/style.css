@@ -21,3 +21,15 @@ text {
   fill: #666;
   font-size: 16px;
 }
+
+/* from https://stackoverflow.com/questions/22530982/html-numbering-with-brackets */
+ol.ref {
+    counter-reset: list;
+}
+ol.ref > li {
+    list-style: none;
+}
+ol.ref > li:before {
+    content: " [" counter(list) "] ";
+    counter-increment: list;
+}
