@@ -290,7 +290,7 @@
             <a class="nav-link" id="profile-tab" data-toggle="tab" href="#weight-minimization" role="tab">Minimizing the Total Weight</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" id="profile-tab" data-toggle="tab" href="#edge-minimization" role="tab">Minimizing the Number of Edges</a>
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#edge-minimization" role="tab">Minimizing the Number of Edges</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" id="profile-tab" data-toggle="tab" href="#acknowledgements" role="tab">Acknowledgements</a>
@@ -490,6 +490,49 @@
               </p>
             </div>
           </div>
+          <div class="tab-pane fade" id="edge-minimization" role="tabpanel">
+            <div style="padding: 10px">
+              <p class="indented">
+                Though this page thoroughly covers the soultion to minimize the total weight,
+                I would be remiss if I didn't also mention that there is an
+                alternative solution: We could instead minimize the number of edges.
+                Essentially, we would want to come up with an algorithm such
+                that the number of reimbursements is no more than \(n-2\), else we
+                wouldn't have too much use for it.
+              </p>
+              <p class="indented">
+                The problem of minimizing the number of edges happesn to be slightly
+                more difficult than the problem of minimizing the total weight because
+                the former happens to be analogous to the subset sum problem, which is
+                an NP-hard problem.
+                Therefore there is no known exact solution that could solve this kind of
+                problem in less than exponential time with respect to the input number.
+                For the problem at hand, this means that we want to find subsets of the
+                balances that cancel out.
+              </p>
+              <p class="indented">
+                While exact algorithms to solve this problems may not exist,
+                approximate algorithms certainly do.
+                The following are a few papers I found that come up with an
+                approximate algorithm to the reimbursement problem:
+                <ul>
+                  <li>
+                    Csaba P&abreve;tca&scedil;. 2011. <a href="https://arxiv.org/abs/1111.3663">The debts' clearing problem: a new approach</a>. arXiv:1111.3663.
+                  </li>
+                  <li>
+                    Csaba P&abreve;tca&scedil; and Attila Bartha. 2014. <a href="https://arxiv.org/abs/1402.6556">Evolutionary solving of the debts' clearing problem</a>. arXiv:1402.6556
+.
+                  </li>
+                  <li>
+                    Daan Salom&#233;. 2017. <a href="https://research.tue.nl/en/studentTheses/bank-transaction-minimization">Bank Transaction Minimization</a>. Bachelor's thesis. Eindhoven University of Technology, Eindhoven, Netherlands.
+                  </li>
+                  <li>
+                    Yuanfan Yao. 2017. <a href="http://nrs.harvard.edu/urn-3:HUL.InstRepos:38811480">Settling Debts Efficiently: Zero-Sum Set Packing</a>. Bachelor's thesis. Harvard University, Cambridge, MA.
+                  </li>
+                </ul>
+              </p>
+            </div>
+          </div>
           <div class="tab-pane fade" id="acknowledgements" role="tabpanel">
             <div style="padding: 10px">
               <p class="indented">
@@ -502,7 +545,7 @@
               <p class="indented">
                 While I had figured out the bipartite graph solution on my own,
                 I had not mathematically formalized the solution.
-                The preceding sections are largely based on Tom Verhoeff's paper [2]
+                The preceding sections are all based on Tom Verhoeff's paper [2]
                 (and some notation borrowed from [1]).
                 I made certain changes in an effort to streamline the explanations.
               </p>
