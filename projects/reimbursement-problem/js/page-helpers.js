@@ -76,12 +76,17 @@ function addName(name, generateGraph) {
 function insertTransaction() {
   const reimburser = $("#reimbursers");
   const reimbursee = $("#reimbursees");
-  const amount = Number(document.getElementById("amount").value)
+  const amount = Number(document.getElementById("amount").value);
 
   // amount must satisfy the following checks
-  if (isNaN(amount)) return
-  if (amount == 0) return
-
+  if (isNaN(amount) || document.getElementById("amount").value === "") {
+    alert("Please enter a number.")
+    return
+  }
+  if (amount == 0) {
+    alert("Please enter a nonzero amount.")
+    return
+  }
   //if (!Number.isInteger(amount)) {
   //  alert("Please choose a nonzero integer.")
   //  return

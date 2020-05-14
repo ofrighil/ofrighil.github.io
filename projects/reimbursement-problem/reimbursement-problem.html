@@ -39,11 +39,11 @@
           Naturally, everyone would like to be reimbursed at the end of the trip.
           So then what's the <i>best</i> way to reimburse everyone?
           For a detailed explanation, scroll down to the bottom of the page.
-          Else, you can start playing around with the tool.
+          Otherwise, you can start playing around with the tool.
         </p>
         <p class="indented">
           This tool is straightforward to use.
-          First, add up to <script>document.write(`${N}`)</script> participants.
+          First, up to <script>document.write(`${N}`)</script> participants may be added.
           These participants are kept track in the <a href="#participants-table-button" style="color:black"><b>Participants Table</b></a>.
           Then for each transaction that occurred, select a reimbursee, a reimburser, and a given amount of money to be reimbursed.
           These transactions are kept track in the <a href="#reimbursement-table-button" style="color:black"><b>Reimbursement Table</b></a>.
@@ -324,7 +324,7 @@
                 evaluate \(|q_{ij} - q_{ji}|\) for all unordered pairs \((v_i, v_j)\).
                 If \(q_{ij} \geq q_{ji}\), then have \(v_i\) reimburse \(v_j\) the
                 amount \(|q_{ij} - q_{ji}|\).
-                Else if \(q_{ij} < q_{ji}\), then have \(v_j\) reimburse \(v_i\)
+                Otherwise, if \(q_{ij} < q_{ji}\), then have \(v_j\) reimburse \(v_i\)
                 the aforementioned amount.
                 However, this reduction does not asymptotically improve the number
                 of necessary reimbursements.
@@ -360,7 +360,7 @@
                 a new graph.
                 Though the vertices \(V\) will remain the same, we'll need to come
                 up with a new set of directed edges with weights \(E^*\).
-                Given a vertex \(v_i\), let the sum of all incoming edgew be \(r_i\)
+                Given a vertex \(v_i\), let the sum of all incoming edge be \(r_i\)
                 and let the sum of all outgoing edges be \(p_i\) so that the
                 difference between incoming edges and outgoing edges equals \(b_i\).
                 A weighted directed graph that has these \(V\) and edges \(E^*\)
@@ -382,7 +382,7 @@
                 positive balances.
                 This is because at the bare minimum everyone must be properly
                 reimbursed.
-                Though it may be obvious, let's be a be more precise about the
+                Though it may be obvious, let's be more precise about the
                 minimum value.
                 We saw in the previous section that the sum of all balances is zero:
                 \begin{align*}
@@ -493,15 +493,15 @@
           <div class="tab-pane fade" id="edge-minimization" role="tabpanel">
             <div style="padding: 10px">
               <p class="indented">
-                Though this page thoroughly covers the soultion to minimize the total weight,
+                Though this page thoroughly covers the solution to minimize the total weight,
                 I would be remiss if I didn't also mention that there is an
                 alternative solution: We could instead minimize the number of edges.
                 Essentially, we would want to come up with an algorithm such
-                that the number of reimbursements is no more than \(n-2\), else we
+                that the number of reimbursements is no more than \(n-2\), otherwise we
                 wouldn't have too much use for it.
               </p>
               <p class="indented">
-                The problem of minimizing the number of edges happesn to be slightly
+                The problem of minimizing the number of edges happens to be slightly
                 more difficult than the problem of minimizing the total weight because
                 the former happens to be analogous to the subset sum problem, which is
                 an NP-hard problem.
